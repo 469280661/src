@@ -8,7 +8,9 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.net.InetAddress;
 import java.net.Socket;
+import java.net.UnknownHostException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import javax.swing.JButton;
@@ -123,7 +125,13 @@ public class LoginThread extends Thread {
                     if (rs.next()) {
                         String encodePassword = rs.getString("PASSWORD");
                         if (MD5.checkpassword(password,encodePassword)) {
-                           loginf.setVisible(false);
+                            InetAddress addr = InetAddress.getLocalHost();//获取IP
+                            System.out.println("本机IP地址:"+addr.getHostAddress()) ;//跟上面一行一起的
+                            sql="update users set ip=?,port=8888 where username=?";//相当与执行查询IP
+                            pstmt=conn.prepareStatement(sql);//声明sql
+                            pstmt.setString(1,addr.getHostAddress());//声明IP
+                            pstmt.setString(2,username);//声明用户名
+                            loginf.setVisible(false);
                            ChatThreadWindow chatThreadWindow=new ChatThreadWindow();
                         } else{
                             System.out.println("登录失败");
@@ -134,6 +142,8 @@ public class LoginThread extends Thread {
                 } catch (NoSuchAlgorithmException ex) {
                     ex.printStackTrace();
                 } catch (UnsupportedEncodingException ex) {
+                    ex.printStackTrace();
+                } catch (UnknownHostException ex) {
                     ex.printStackTrace();
                 }
 				/*
