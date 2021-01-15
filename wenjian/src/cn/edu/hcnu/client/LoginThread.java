@@ -49,7 +49,7 @@ public class LoginThread extends Thread {
         t1.setEditable(false);
         loginp.add(t1);
 
-        final JTextField loginname = new JTextField("liwei");
+        final JTextField loginname = new JTextField("liu");
         loginname.setHorizontalAlignment(JTextField.CENTER);
         loginp.add(loginname);
 
@@ -58,7 +58,7 @@ public class LoginThread extends Thread {
         t2.setEditable(false);
         loginp.add(t2);
 
-        final JTextField loginPassword = new JTextField("lw1234");
+        final JTextField loginPassword = new JTextField("liu123");
         loginPassword.setHorizontalAlignment(JTextField.CENTER);
         loginp.add(loginPassword);
         /*
@@ -112,9 +112,9 @@ public class LoginThread extends Thread {
                 String username = loginname.getText();
                 String password = loginPassword.getText();
                 try {
-                    String url = "jdbc:oracle:thin:@localhost:1521:orclhc";
-                    String username_db = "opts";
-                    String password_db = "opts1234";
+                    String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+                    String username_db = "oooo";
+                    String password_db = "ooo1234";
                     Connection conn = DriverManager.getConnection(url, username_db, password_db);
                     String sql = "SELECT password FROM users WHERE username=?";
                     PreparedStatement pstmt = conn.prepareStatement(sql);
