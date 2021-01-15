@@ -12,8 +12,8 @@ public class FileClient {
     public static void main(String[] args) {
         Socket socket = null;
         try {
-            socket = new Socket("192.168.1.91", 9999);
-            FileOutputStream fos = new FileOutputStream("E://1.txt");
+            socket = new Socket("192.168.1.1", 9999);
+            FileOutputStream fos = new FileOutputStream("E://");
             InputStream is = socket.getInputStream();
             byte buff[] = new byte[1024];
             int a = 0;
