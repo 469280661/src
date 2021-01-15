@@ -21,6 +21,17 @@ public class Flight {
         this.destinationAirPort=destinationAirPort;
         this.departureTime=departureTime;
     }
+    public Flight(String flightId,String planeType,int currentSeatsNum,
+                  String departureAirPort,String destinationAirPort,String departureTime){
+        this.flightId=flightId;
+        this.planeType=planeType;
+        this.currentSeatsNum=currentSeatsNum;
+        this.departureAirPort=departureAirPort;
+        this.destinationAirPort=destinationAirPort;
+        this.departureTime=departureTime;
+
+    }
+
 
     public String getId() {
         return id;

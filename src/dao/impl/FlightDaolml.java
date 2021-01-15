@@ -10,14 +10,14 @@ import java.util.Set;
 public class FlightDaolml implements IFlightDao {
     @Override
     public void insertFlight(Flight flight) throws SQLException {
-        String url="jdbc:oracle:thin:@localhost:1521:orcl";
-        String username="";
-        String password="";
-        Connection/*连接*/ conn= DriverManager.getConnection(url,username,password);
-        String sql="INSERT INTO flight VALUES(?,?,?,?,?,?,?)";
+        String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+        String username = "oooo";
+        String password = "ooo1234";
+        Connection/*连接*/ conn = DriverManager.getConnection(url, username, password);
+        String sql = "INSERT INTO flight VALUES(?,?,?,?,?,?,?)";
 
-        PreparedStatement/*编制报表*/ pstmt=conn.prepareStatement(sql);
-        pstmt.setString(1,flight.getId());
+        PreparedStatement/*编制报表*/ pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, flight.getId());
         pstmt.setString(2, flight.getFlightId());
         pstmt.setString(3, flight.getPlaneType());
         pstmt.setInt(4, flight.getCurrentSeatsNum());
@@ -31,16 +31,16 @@ public class FlightDaolml implements IFlightDao {
 
     @Override
     public Set<Flight> getAllFlights() throws SQLException {
-       Set<Flight>allFlights=new HashSet<Flight>();//容器//HashSet类，是存在于java.util包中的类 。同时也被称为集合，该容器中只能存储不重复的对象。
-       // HashSet是set接口的实现类， 储存的是无序，唯一的对象。 HashSet的元素不能重复,HashSet中允许有NULL值
-        String url="jdbc:oracle:thin:@localhost:1521:orcl";
-        String username="";
-        String password="";
-        Connection conn=DriverManager.getConnection(url,username,password);
-        String sql="SELECT * FROM flight";
-        PreparedStatement/*编制报表*/ pstmt=conn.prepareStatement(sql);
-        ResultSet/*结果集*/ rs=pstmt.executeQuery();//执行查询
-        while(rs.next()){
+        Set<Flight> allFlights = new HashSet<Flight>();//容器//HashSet类，是存在于java.util包中的类 。同时也被称为集合，该容器中只能存储不重复的对象。
+        // HashSet是set接口的实现类， 储存的是无序，唯一的对象。 HashSet的元素不能重复,HashSet中允许有NULL值
+        String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+        String username = "oooo";
+        String password = "ooo1234";
+        Connection conn = DriverManager.getConnection(url, username, password);
+        String sql = "SELECT * FROM flight";
+        PreparedStatement/*编制报表*/ pstmt = conn.prepareStatement(sql);
+        ResultSet/*结果集*/ rs = pstmt.executeQuery();//执行查询
+        while (rs.next()) {
             String id = rs.getString("ID");
             String flightId = rs.getString("FLIGHT_ID");
             String planeType = rs.getString("PLANE_TYPE");
@@ -57,18 +57,82 @@ public class FlightDaolml implements IFlightDao {
     }
 
     @Override
-    public Flight getFlightByDepartureTime(String departureTime) {
-        return null;
+    public Flight getFlightByDepartureTime(String departureTime) throws SQLException {
+        String sql = "SELECT FLIGHT_ID,PLANE_TYPE,\n" +
+                "TOTAL_SEATS_NUM,DEPARTURE_AIRPORT,\n" +
+                "DESTINATION_AIRPORT,DEPARTURE_TIME FROM flight \n" +
+                "WHERE DEPARTURE_TIME=?";
+        String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+        String username = "oooo";
+        String password = "ooo1234";
+        Connection conn = DriverManager.getConnection(url, username, password);//通过getConnection()方法获得和数据库链接
+        Flight flight = null;
+        PreparedStatement/*编制报表*/ pstmt = conn.prepareStatement(sql);//SQL 语句被预编译并且存储在 PreparedStatement 对象中
+        pstmt.setString(1, departureTime);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            String flightId = rs.getString("FLIGHT_ID");
+            String planeType = rs.getString("PLANE_TYPE");
+            int currentSeatsNum = rs.getInt("TOTAL_SEATS_NUM");
+            String departureAirPort = rs.getString("DEPARTURE_AIRPORT");
+            String destinationAirPort = rs.getString("DESTINATION_AIRPORT");
+            String departureTimes = rs.getString("DEPARTURE_TIME");
+            flight = new Flight(flightId, planeType, currentSeatsNum,
+                    departureAirPort, destinationAirPort, departureTimes);
+        }
+        return flight;
     }
 
     @Override
-    public Flight getFlightByDepartureAirPort(String departureAirPort) {
-        return null;
+    public Flight getFlightByDepartureAirPort(String departureAirPort) throws SQLException {
+        String sql = "SELECT FLIGHT_ID,PLANE_TYPE,\n" +
+                "TOTAL_SEATS_NUM,DEPARTURE_AIRPORT,\n" +
+                "DESTINATION_AIRPORT,DEPARTURE_TIME FROM flight \n" +
+                "WHERE DEPARTURE_AIRPORT=?";
+        String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+        String username = "oooo";
+        String password = "ooo1234";
+        Connection conn = DriverManager.getConnection(url, username, password);//通过getConnection()方法获得和数据库链接
+        Flight flight = null;
+        PreparedStatement/*编制报表*/ pstmt = conn.prepareStatement(sql);//SQL 语句被预编译并且存储在 PreparedStatement 对象中
+        pstmt.setString(1,departureAirPort );
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            String flightId = rs.getString("FLIGHT_ID");
+            String planeType = rs.getString("PLANE_TYPE");
+            int currentSeatsNum = rs.getInt("TOTAL_SEATS_NUM");
+            String destinationAirPort = rs.getString("DESTINATION_AIRPORT");
+            String departureTimes = rs.getString("DEPARTURE_TIME");
+            flight = new Flight(flightId, planeType, currentSeatsNum,
+                    departureAirPort, destinationAirPort, departureTimes);
+        }
+        return flight;
     }
 
     @Override
-    public Flight getFlightByDestinationAirPort(String destinationAirPort) {
-        return null;
+    public Flight getFlightByDestinationAirPort(String destinationAirPort) throws SQLException {
+        String sql = "SELECT FLIGHT_ID,PLANE_TYPE,\n" +
+                "TOTAL_SEATS_NUM,DEPARTURE_AIRPORT,\n" +
+                "DESTINATION_AIRPORT,DEPARTURE_TIME FROM flight \n" +
+                "WHERE  DESTINATION_AIRPORT=?";
+        String url = "jdbc:oracle:thin:@localhost:1521:orcl";
+        String username = "oooo";
+        String password = "ooo1234";
+        Connection conn = DriverManager.getConnection(url, username, password);//通过getConnection()方法获得和数据库链接
+        Flight flight = null;
+        PreparedStatement/*编制报表*/ pstmt = conn.prepareStatement(sql);//SQL 语句被预编译并且存储在 PreparedStatement 对象中
+        pstmt.setString(1, destinationAirPort);
+        ResultSet rs = pstmt.executeQuery();
+        while (rs.next()) {
+            String flightId = rs.getString("FLIGHT_ID");
+            String planeType = rs.getString("PLANE_TYPE");
+            int currentSeatsNum = rs.getInt("TOTAL_SEATS_NUM");
+            String departureAirPort = rs.getString("DEPARTURE_AIRPORT");
+            String departureTimes = rs.getString("DEPARTURE_TIME");
+            flight = new Flight(flightId, planeType, currentSeatsNum,
+                    departureAirPort, destinationAirPort, departureTimes);
+        }
+        return flight;
     }
 
     @Override
@@ -76,3 +140,4 @@ public class FlightDaolml implements IFlightDao {
 
     }
 }
+
